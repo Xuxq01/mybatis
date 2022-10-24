@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mybatis.mapper.StudentMapper">
+    <select id="selectByNameAndSex2" resultType="student">
+        <!--使用@param注解之后,arg0,arg1失效了,param1,param2还在-->
+        select * from t_student where name=#{name} and sex=#{sex}
+    </select>
+
+    <select id="selectByNameAndSex" resultType="student">
+        <!--select * from t_student where name=#{arg0} and sex=#{arg1}-->
+        <!--select * from t_student where name=#{param1} and sex=#{param2}-->
+        select * from t_student where name=#{param1} and sex=#{arg1}
+    </select>
+
+    <insert id="insertStudentByPojo">
+        insert into t_student(id,name,age,sex,birth,height) values (null,#{name},#{age},#{sex},#{birth},#{height})
+    </insert>
+
+    <insert id="insertStudentByMap" parameterType="map">
+        insert into t_student(id,name,age,sex,birth,height) values (null,#{姓名},#{年龄},#{性别},#{生日},#{身高})
+    </insert>
+
+    <!--
+        List<Student> selectById(Long id);
+        List<Student> selectByName(String name);
+        List<Student> selectByBirth(Date birth);
+        List<Student> selectBySex(Character sex);
+
+        parameterType属性的作用:
+            告诉mybatis框架这个方法的参数是什么类型
+            mybatis框架自身带有类型自动推断机制,所以大部分情况可以不写
+
+        注意:mybatis内置了很多别名
+
+    -->
+    <select id="selectById" resultType="student" parameterType="long">
+        select * from t_student where id = #{id}
+    </select>
+
+    <select id="selectByName" resultType="student">
+        select * from t_student where name = #{name, javaType=String, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByBirth" resultType="student">
+        select * from t_student where birth = #{11}
+    </select>
+
+    <select id="selectBySex" resultType="student">
+        select * from t_student where sex = #{sex}
+    </select>
+</mapper>
